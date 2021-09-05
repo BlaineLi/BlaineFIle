@@ -1,1 +1,83 @@
-dm1lc3M6Ly9ld29pZGlJNklDSXlJaXdLSW5Ceklqb2dJakl6TTNZeUxtTnZiVjh4TkRZdU5UWXVNVGcxTGpZd0lpd0tJbUZrWkNJNklDSXhORFl1TlRZdU1UZzFMall3SWl3S0luQnZjblFpT2lBaU1qUXpNalFpTEFvaWFXUWlPaUFpTlROaE1UTXhPREF0T0daak9DMDBZVEUzTFRnMU5XTXRZV0kwTmprNE1UazJNREU1SWl3S0ltRnBaQ0k2SUNJd0lpd0tJbTVsZENJNklDSjNjeUlzQ2lKMGVYQmxJam9nSW01dmJtVWlMQW9pYUc5emRDSTZJQ0lpTEFvaWNHRjBhQ0k2SUNJaUxBb2lkR3h6SWpvZ0lpSUtmUW89
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+external-controller: 127.0.0.1:9090
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  default-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback:
+    - tls://one.one.one.one:853
+    - tls://dns.google:853
+    - https://dns.twnic.tw/dns-query
+    - https://dns.adguard.com/dns-query
+    - https://doh.dns.sb/dns-query
+proxies:
+  - name: Oracle
+    type: vmess
+    server: 146.56.141.157
+    port: "53265"
+    uuid: a1c3233c-b7a5-4dc8-a55e-84722d6b96bb
+    alterId: "0"
+    cipher: auto
+    network: tcp
+    ws-path: /
+proxy-groups:
+  - name: 🚀 节点选择
+    type: select
+    proxies:
+      - 🔯 故障转移
+      - ♻️ 自动选择
+      - Oracle
+  - name: ♻️ 自动选择
+    type: url-test
+    proxies:
+      - Oracle
+    url: http://www.gstatic.com/generate_204
+    interval: 86400
+  - name: 🔯 故障转移
+    type: fallback
+    proxies:
+      - Oracle
+    url: http://www.gstatic.com/generate_204
+    interval: 7200
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - 🔯 故障转移
+      - ♻️ 自动选择
+rules:
+  - DOMAIN-KEYWORD,youtube,🎯 全球直连
+  - DOMAIN,youtubei.googleapis.com,🎯 全球直连
+  - DOMAIN,yt3.ggpht.com,🎯 全球直连
+  - DOMAIN-SUFFIX,googlevideo.com,🎯 全球直连
+  - DOMAIN-SUFFIX,gvt2.com,🎯 全球直连
+  - DOMAIN-SUFFIX,youtu.be,🎯 全球直连
+  - DOMAIN-SUFFIX,youtube.com,🎯 全球直连
+  - DOMAIN-SUFFIX,ytimg.com,🎯 全球直连
+
+  - DOMAIN-SUFFIX,google.com,🎯 全球直连
+  - DOMAIN-SUFFIX,google.com.hk,🎯 全球直连
+
+  - DOMAIN-SUFFIX,github.com,🎯 全球直连
+  - DOMAIN-SUFFIX,github.com,🎯 全球直连
+  - DOMAIN-SUFFIX,github.io,🎯 全球直连
+  - DOMAIN-SUFFIX,githubapp.com,🎯 全球直连
+  - DOMAIN-SUFFIX,githubassets.com,🎯 全球直连
+  - DOMAIN-SUFFIX,githubusercontent.com,🎯 全球直连
+  - DOMAIN-SUFFIX,rawgithub.com,🎯 全球直连
+  - DOMAIN-SUFFIX,raw.githubusercontent.com,🎯 全球直连
+  - DOMAIN-SUFFIX,api.github.com,🎯 全球直连
+  
+
+  - DOMAIN-SUFFIX,home-assistant.io,🎯 全球直连
+  - DOMAIN-SUFFIX,version.home-assistant.io,🎯 全球直连
+  - DOMAIN-SUFFIX,api.met.no,🎯 全球直连
